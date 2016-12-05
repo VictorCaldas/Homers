@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Homers</string>
+
+    <string name="max_speed">Velocidade Maxima</string>
+    <string name="average_speed">Média da velocidade</string>
+    <string name="distance">Distancia</string>
+    <string name="time">Tempo</string>
+    <string name="accuracy">Precisão</string>
+    <string name="satellite">Satelites</string>
+
+    <string name="waiting_for_fix">Aguardando GPS...</string>
+    <string name="gps_disabled">GPS desabilitado</string>
+    <string name="please_enable_gps">Ative seu GPS.</string>
+
+    <string name="running">Iniciando</string>
+    <string name="notification">Erro</string>
+
+    <string name="settings">Configurações</string>
+    <string name="app_info">О програму</string> 
+
+    
+    <string name="version">Издање Брзиномера</string>
+
+    <string name="noti_id" translatable="false">Speedmeterisanid</string>
+
+</resources>
