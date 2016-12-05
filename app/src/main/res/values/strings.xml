@@ -28,4 +28,5 @@
     <string name="source_code">Github</string>
     <string name="source_code_summary">Acces to the source code.</string>
     <string name="version">Speedmeter Version</string>
+    <string name="service_id">com.homers.service</string>
 </resources>

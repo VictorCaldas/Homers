@@ -2,7 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.homers">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="br.com.diligeiro.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+
 
     <application
         android:allowBackup="true"
@@ -10,6 +21,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- Required for Nearby Connections API -->
+        <meta-data android:name="com.google.android.gms.nearby.connection.SERVICE_ID"
+            android:value="@string/service_id" />
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDpCzF5qQTYS2qa2QVN41cu-MpElx6qTLo" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <meta-data
             android:name="com.google.android.nearby.messages.API_KEY"
             android:value="AIzaSyDpCzF5qQTYS2qa2QVN41cu-MpElx6qTLo" />
@@ -23,7 +48,22 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".MapActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
         <service android:name=".GpsServices"/>
     </application>
+
+    <uses-library
+        android:name="com.google.android.maps" />
+
 
 </manifest>
