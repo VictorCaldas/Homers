@@ -28,7 +28,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -41,19 +40,14 @@ import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 import com.google.android.gms.nearby.messages.Strategy;
 import com.google.gson.Gson;
+import com.google.android.gms.nearby.connection.Connections;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.android.gms.nearby.Nearby;
-import com.google.android.gms.nearby.connection.AppIdentifier;
-import com.google.android.gms.nearby.connection.AppMetadata;
-import com.google.android.gms.nearby.connection.Connections;
-import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
-
-
-public class MainActivity extends AppCompatActivity implements LocationListener, GpsStatus.Listener,
+public class MainActivity extends AppCompatActivity implements LocationListener,
+        GpsStatus.Listener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener,
@@ -62,55 +56,52 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         Connections.EndpointDiscoveryListener {
 
 
-    private SharedPreferences sharedPreferences;
-    private String mRemoteHostEndpoint;
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String ENCODE = "UTF-8";
+    private String mRemoteHostEndpoint;
     private static final int REQUEST_RESOLVE_ERROR = 1;
-    private boolean mResolvingError = false;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
-    private LocationManager mLocationManager;
+    private static int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
+    private boolean firstfix;
+    private boolean isConnected;
+    private boolean mResolvingError = false;
     private boolean mIsHost = false;
+    private long CONNECTION_TIME_OUT = 15000;
+    private SharedPreferences sharedPreferences;
+    private TextView status;
+    private TextView currentSpeed;
+    private TextView longitude;
+    private TextView latitude;
+    private LocationManager mLocationManager;
     private static Data data;
     private List<String> remotePeerEndpoints;
     private Toolbar toolbar;
     private FloatingActionButton fab;
     private ProgressBar progressBarCircularIndeterminate;
-    private TextView status;
-    private boolean isConnected;
-    private TextView currentSpeed;
-    private TextView longitude;
     private ArrayAdapter<String> adapter;
-    private TextView latitude;
     private Data.onGpsServiceUpdate onGpsServiceUpdate;
-    private boolean firstfix;
     private GoogleApiClient mGoogleApiClient;
-    private static int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
     private NearbyConnectionCallbacks mConnectionCallbacks = new NearbyConnectionCallbacks();
     private NearbyConnectionFailedListener mFailedListener = new NearbyConnectionFailedListener();
     private Strategy mStrategy = new Strategy.Builder().setDiscoveryMode(Strategy.DISCOVERY_MODE_DEFAULT).setDistanceType(Strategy.DISTANCE_TYPE_DEFAULT).setTtlSeconds(Strategy.TTL_SECONDS_DEFAULT).build();
-    private long CONNECTION_TIME_OUT = 15000;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        remotePeerEndpoints = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, remotePeerEndpoints);
+        setupView();
 
         data = new Data(onGpsServiceUpdate);
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Nearby.MESSAGES_API)
                 .addConnectionCallbacks(mConnectionCallbacks)
                 .addOnConnectionFailedListener(mFailedListener)
                 .addApi(Nearby.CONNECTIONS_API)
                 .build();
-        //createGoogleApiClient();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        setupView();
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         onGpsServiceUpdate = new Data.onGpsServiceUpdate() {
             @Override
@@ -153,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         mLocationManager.addGpsStatusListener(this);
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -187,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         super.onStop();
     }
 
-
     private void handleStartSolution(Status status) {
         if (!mResolvingError) {
             try {
@@ -200,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     }
 
     public void onFabClick(View v) {
-        // sendMessage();
         Intent intent = new Intent(getApplicationContext(), MapActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.in, R.anim.in2);
@@ -208,6 +196,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
 
     private void setupView(){
+        remotePeerEndpoints = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, remotePeerEndpoints);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -220,15 +211,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         progressBarCircularIndeterminate = (ProgressBar) findViewById(R.id.progressBarCircularIndeterminate);
     }
 
-
-    private void createGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Nearby.MESSAGES_API)
-                .addConnectionCallbacks(mConnectionCallbacks)
-                .addOnConnectionFailedListener(mFailedListener)
-                .addApi(Nearby.CONNECTIONS_API)
-                .build();
-    }
 
 
     @Override
@@ -358,7 +340,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
         Nearby.Connections.sendConnectionRequest(mGoogleApiClient, deviceId, endpointId, payload,
                 new Connections.ConnectionResponseCallback() {
-
                     @Override
                     public void onConnectionResponse(String s, Status status, byte[] bytes) {
                         if (status.isSuccess()) {
@@ -535,56 +516,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             Nearby.Connections.sendReliableMessage(mGoogleApiClient, mRemoteHostEndpoint,
                     (Nearby.Connections.getLocalDeviceId(mGoogleApiClient) + " says: " + message).getBytes());
         }
-    }
-
-    private void advertise() {
-        if (!isConnectedToNetwork()) return;
-
-        String name = "Nearby Advertising";
-        Nearby.Connections.startAdvertising(mGoogleApiClient, name, null, CONNECTION_TIME_OUT, this)
-                .setResultCallback(new ResultCallback<Connections.StartAdvertisingResult>() {
-                    @Override
-                    public void onResult(Connections.StartAdvertisingResult result) {
-                        if (result.getStatus().isSuccess()) {
-                            status.setText("Advertising");
-                        }
-                    }
-                });
-    }
-
-
-    private void startAdvertising() {
-        if (!isConnectedToNetwork()) {
-            // Implement logic when device is not connected to a network
-        }
-
-        // Identify that this device is the host
-        mIsHost = true;
-
-        // Advertising with an AppIdentifer lets other devices on the
-        // network discover this application and prompt the user to
-        // install the application.
-        List<AppIdentifier> appIdentifierList = new ArrayList<>();
-        appIdentifierList.add(new AppIdentifier(getPackageName()));
-        AppMetadata appMetadata = new AppMetadata(appIdentifierList);
-
-        // The advertising timeout is set to run indefinitely
-        // Positive values represent timeout in milliseconds
-        long NO_TIMEOUT = 0L;
-
-        String name = null;
-        Nearby.Connections.startAdvertising(mGoogleApiClient, name, appMetadata, NO_TIMEOUT,
-                this).setResultCallback(new ResultCallback<Connections.StartAdvertisingResult>() {
-            @Override
-            public void onResult(Connections.StartAdvertisingResult result) {
-                if (result.getStatus().isSuccess()) {
-                    // Device is advertising
-                } else {
-                    int statusCode = result.getStatus().getStatusCode();
-                    // Advertising failed - see statusCode for more details
-                }
-            }
-        });
     }
 
     private void discover() {
