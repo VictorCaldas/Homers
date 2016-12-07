@@ -10,4 +10,8 @@
     <color name="blue">#1E88E5</color>
     <color name="blue_dark">#01579B</color>
     <color name="white">#FFF</color>
+
+    <color name="pin_green">#0EB200</color>
+    <color name="pin_yellow">#FFB100</color>
+    <color name="pin_red">#EF0000</color>
 </resources>

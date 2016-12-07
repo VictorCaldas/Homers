@@ -1,4 +1,4 @@
-package com.homers;
+package com.homers.Service;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -12,6 +12,10 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+
+import com.homers.Model.Data;
+import com.homers.UI.MainActivity;
+import com.homers.R;
 
 public class GpsServices extends Service implements LocationListener, GpsStatus.Listener {
     private LocationManager mLocationManager;

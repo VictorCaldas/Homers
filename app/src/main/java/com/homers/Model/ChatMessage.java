@@ -1,4 +1,4 @@
-package com.homers;
+package com.homers.Model;
 
 import android.os.Build;
 

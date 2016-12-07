@@ -29,4 +29,8 @@
     <string name="source_code_summary">Acces to the source code.</string>
     <string name="version">Speedmeter Version</string>
     <string name="service_id">com.homers.service</string>
+    <string name="url_api">https://homedonuts.herokuapp.com/</string>
+    <string name="ruas_com_congestionamento_em_tempo_real">Ruas com congestionamento em tempo real</string>
+    <string name="nome_da_rua">Nome da Rua</string>
+    <string name="loading_street">Carregando ruas com trânsito</string>
 </resources>

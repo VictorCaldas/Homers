@@ -40,7 +40,7 @@
             android:value="AIzaSyDpCzF5qQTYS2qa2QVN41cu-MpElx6qTLo" />
 
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".UI.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,8 +49,8 @@
         </activity>
 
         <activity
-            android:name=".MapActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".UI.MapActivity"
+            android:parentActivityName=".UI.MainActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/AppTheme">
@@ -59,7 +59,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".GpsServices"/>
+        <service android:name=".Service.GpsServices"/>
     </application>
 
     <uses-library

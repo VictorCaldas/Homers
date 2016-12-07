@@ -1,4 +1,4 @@
-package com.homers;
+package com.homers.UI;
 
 import android.Manifest;
 import android.content.Context;
@@ -41,6 +41,10 @@ import com.google.android.gms.nearby.messages.MessageListener;
 import com.google.android.gms.nearby.messages.Strategy;
 import com.google.gson.Gson;
 import com.google.android.gms.nearby.connection.Connections;
+import com.homers.Model.ChatMessage;
+import com.homers.Model.Data;
+import com.homers.R;
+import com.homers.Service.GpsServices;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -202,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        fab.setVisibility(View.INVISIBLE);
+        //fab.setVisibility(View.INVISIBLE);
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         status = (TextView) findViewById(R.id.status);
         longitude = (TextView) findViewById(R.id.latitude);
@@ -458,7 +462,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     @Override
     public void onProviderDisabled(String s) {}
-
 
 
     private boolean isConnectedToNetwork() {
