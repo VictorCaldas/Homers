@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,10 +25,19 @@
             app:layout_collapseParallaxMultiplier="0.7"
             tools:context=".UI.MapActivity" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:onClick="onFabClickMap"
+        android:layout_gravity="right|bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_location_on_white_24dp"
+        style="@style/fab_map"/>
 
 
 
-    <android.support.v4.widget.NestedScrollView
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="350dp"
@@ -38,64 +46,97 @@
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
 
-        <RelativeLayout
-            android:id="@+id/linear_layout_bottom_sheet"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="80dp">
+        <TextView
+            android:id="@+id/nameStreet"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageView"
+            android:layout_alignStart="@+id/textView"
+            android:layout_marginBottom="16dp"
+            android:lines="2"
+            android:minLines="1"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.11"
+            app:layout_constraintLeft_toRightOf="@+id/imageView"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:layout_constraintVertical_bias="0.00999999" />
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/imageView2"
+            android:layout_below="@+id/imageView2"
+            android:paddingLeft="6dp"
+            app:srcCompat="@drawable/ic_router_black_24dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintHorizontal_bias="0.01"
+            app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="1dp"
-                android:fontFamily="sans-serif-light"
-                android:paddingTop="21dp"
-                android:textStyle="bold"
-                android:text="@string/ruas_com_congestionamento_em_tempo_real"
-                android:textColor="#1565c0"
-                android:textSize="14sp"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/imageView2" />
+        <View
+            android:id="@+id/view"
+            android:layout_width="352dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="232dp"
+            android:layout_marginTop="8dp"
+            android:background="#c0c0c0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintVertical_bias="0.17000002" />
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="0.3dp"
-                android:layout_marginTop="55dp"
-                android:background="#c0c0c0"/>
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingTop="10dp"
+            app:srcCompat="@drawable/ic_room_white_24dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintVertical_bias="0.0" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:paddingLeft="6dp"
-                app:srcCompat="@drawable/ic_router_black_24dp"
-                android:layout_below="@+id/imageView2"
-                android:layout_alignStart="@+id/imageView2" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="281dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/imageView2"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/ruas_com_congestionamento_em_tempo_real"
+            android:textColor="#1565c0"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_bias="0.04"
+            app:layout_constraintHorizontal_bias="0.16" />
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_room_white_24dp"
-                android:layout_alignParentTop="true"
-                android:paddingTop="10dp"
-                android:layout_alignParentStart="true"/>
-
-            <TextView
-                android:id="@+id/nameStreet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:textStyle="italic"
-                android:text="@string/nome_da_rua"
-                android:layout_alignBottom="@+id/imageView"
-                android:layout_alignStart="@+id/textView" />
-        </RelativeLayout>
-
-
-    </android.support.v4.widget.NestedScrollView>
+    </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

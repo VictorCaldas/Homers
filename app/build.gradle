@@ -39,6 +39,7 @@ dependencies {
 
     compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.google.android.gms:play-services-nearby:10.0.1'
+    compile 'com.google.android.gms:play-services-location:10.0.1'
     compile 'com.google.code.gson:gson:2.7'
 
     // Square Library
@@ -47,8 +48,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.jakewharton:butterknife:6.1.0'
-
-
 
 }
 
